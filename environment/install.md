@@ -41,9 +41,41 @@ or If you want to start with specific version use command below <br>
  minikube start --kubernete-version vX.Y.Z 
 ```
 
-
 interact with your cluster <br>
 ```bash
 kubectl get pod -A
 ```
 
+For additional insight into your cluster state, minikube bundles the Kubernetes Dashboard, allowing you to get easily acclimated to your new environment: <br>
+```bash
+minikube dashboard
+```
+
+___
+## Deploy applications
+### Service
+
+Create a sample deployment and expose it on port 8080:
+```bash
+kubectl create deployment hello-minikube --image=kicbase/echo-server:1.0
+kubectl expose deployment hello-minikube --tpye=NodePort --port=8080
+```
+
+It may take a moment, but your deployment will soon show up when you run <br>
+```bash
+kubectl get service hello-minikube
+```
+The easiest way to access this service is to let minikube launch a web browser for you:
+```bash
+minikube service hello-minikube
+```
+Alternatively, use kubectl to forward the port:
+```bash
+kubectl port-forward service/hello-minikube 7080:8080
+```
+
+Tada! Your application is now available at http://localhost:7080/. <br>
+
+You should be able to see the request metadata in the application output. Try changing the path of the request and observe the changes. Similarly, you can do a POST request and observe the body show up in the output.
+
+___
