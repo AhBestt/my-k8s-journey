@@ -79,3 +79,19 @@ Tada! Your application is now available at http://localhost:7080/. <br>
 You should be able to see the request metadata in the application output. Try changing the path of the request and observe the changes. Similarly, you can do a POST request and observe the body show up in the output.
 
 ___
+
+### LoadBalancer
+To access a LoadBalancer deployment, use the “minikube tunnel” command. Here is an example deployment: <br>
+```bash
+kubectl create deployment balanced --image=kicbase/echo-server:1.0
+kubectl expose deployment balanced --type=LoadBalancer --port=8080
+```
+In another window, start the tunnel to create a routable IP for the ‘balanced’ deployment: <br>
+```bash
+minikube tunnel
+```
+To find the routable IP, run this command and examine the `EXTERNAL-IP` column: <br>
+```bash
+kubectl get services balanced
+```
+Your deployment is now available at <EXTERNAL-IP>:8080
